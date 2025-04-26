@@ -5,9 +5,8 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 
-# Download punkt and stopwords only once, at startup
-nltk.download('punkt')
-nltk.download('stopwords')
+# Add local nltk data path
+nltk.data.path.append('./nltk_data')
 
 ps = PorterStemmer()
 
@@ -35,16 +34,19 @@ def transform_text(text):
 
     return " ".join(y)
 
-# Load models once
-tfidf = pickle.load(open('vectorizer.pkl', 'rb'))
-model = pickle.load(open('model.pkl', 'rb'))
+# Load vectorizer and model
+tfidf = pickle.load(open('vectorizer.pkl','rb'))
+model = pickle.load(open('model.pkl','rb'))
 
+# Streamlit UI
 st.title("Email/SMS Spam Classifier")
 
 input_sms = st.text_area("Enter the message")
 
-if st.button('Predict'):
+# Download only stopwords if needed
+nltk.download('stopwords')
 
+if st.button('Predict'):
     # 1. Preprocess
     transformed_sms = transform_text(input_sms)
     # 2. Vectorize
@@ -56,4 +58,5 @@ if st.button('Predict'):
         st.header("Spam")
     else:
         st.header("Not Spam")
+
 
