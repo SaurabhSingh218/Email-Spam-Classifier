@@ -38,8 +38,8 @@ model = pickle.load(open('model.pkl','rb'))
 st.title("Email/SMS Spam Classifier")
 
 input_sms = st.text_area("Enter the message")
-import nltk
 nltk.download('punkt')
+nltk.download('stopwords')
 if st.button('Predict'):
 
     # 1. preprocess
